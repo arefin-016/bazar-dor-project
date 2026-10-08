@@ -1,10 +1,12 @@
+import Banner from "@/components/Banner";
+import Marquee from "@/components/Marquee";
 import Navliks from "@/components/Navliks";
 import Image from "next/image";
 import { Suspense } from "react";
 
 export default function Home() {
   return (
-	<div className="container mx-auto">
+	<div>
 		<Suspense
   fallback={
     <div className="flex justify center items-center min-h-screen">
@@ -12,8 +14,15 @@ export default function Home() {
     </div>
   }
 >
+	<div className="container mx-auto">
+
   <Navliks />
-</Suspense>
+
+
+	</div>
+ <Marquee></Marquee>
+	</Suspense>
+	<Banner></Banner>
 	</div>
   );
 }

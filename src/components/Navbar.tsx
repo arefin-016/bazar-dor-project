@@ -4,23 +4,33 @@ import React from 'react';
 const Navbar = () => {
 	return (
 
-<div className='flex justify-between container mx-auto'>
+<div className="container mx-auto flex items-center justify-between px-4 py-3">
+  {/* Logo + Title */}
+  <div className="flex items-center gap-2">
+    <Image
+      className="rounded-xl bg-[#05893e] p-2 sm:p-3"
+      src="/logo-icon.png"
+      height={50}
+      width={50}
+      alt="Logo"
+    />
 
-	<div className='flex gap-2 '>
-		<div>
+    <h1 className="text-lg font-bold text-black sm:text-2xl">
+      বাজার দর
+    </h1>
+  </div>
 
-		<Image className='bg-[#05893e] p-3 rounded-2xl' src={'/logo-icon.png'} height={50}width={50} alt="logImage"></Image>
-		</div>
-		<h1 className='text-black text-2xl font-bold'>বাজার দর
+  {/* Buttons */}
+  <div className="flex gap-2 sm:gap-3">
+    <button className="text-sm sm:text-base">
+      সাইন ইন
+    </button>
 
-
-		</h1>
-	</div>
-	<div className='flex gap-3'>
-	<button>সাইন ইন</button>
-<button className='btn bg-green-400 text-white p-1'>সাইন আপ</button></div>
+    <button className="btn bg-green-400 px-2 text-sm text-white sm:px-3 sm:text-base">
+      সাইন আপ
+    </button>
+  </div>
 </div>
-
 	);
 };
 
