@@ -1,5 +1,5 @@
 import React from 'react';
-interface Tproduct{
+export interface Tproduct{
 
 unit:string,
 nameBn:string,

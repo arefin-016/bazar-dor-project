@@ -1,3 +1,4 @@
+import AllProducts from "@/components/AllProducts";
 import Banner from "@/components/Banner";
 import HighPrice from "@/components/HighPrice";
 import LowPrice from "@/components/LowPrice";
@@ -14,28 +15,22 @@ export default function Home() {
 	<div>
 		<Suspense
   fallback={
-    <div className="flex justify center items-center min-h-screen">
-      <span className="loading loading-infinity loading-xl text-blue-600"></span>
-    </div>
-  }
->
-	<div className="container mx-auto">
 
-  <Navliks />
+      <div className="flex justify-center items-center gap-4 min-h-screen">
 
+  <div className="skeleton  h-32 w-32"></div>
+</div>}
+    >
 
-	</div>
- <Marquee></Marquee>
-
-	</Suspense>
-	<Banner></Banner>
-
-	<Suspense fallback={<div> Top six high price loading..</div>}>
-	<HighPrice></HighPrice>
-	</Suspense>
-	<Suspense fallback={<div> Top six Lowest price loading..</div>}>
+<Navliks />
+<Marquee></Marquee>
+ <Banner></Banner>
+ <HighPrice></HighPrice>
 	<LowPrice></LowPrice>
+	<AllProducts></AllProducts>
+
 	</Suspense>
+
 
 
 

@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Tproduct } from './HighPrice';
 const LowPrice = async() => {
 	const res=await fetch("https://api.api-store.workers.dev/api/bazardor/products");
 	const data:Tproduct[]=await res.json();
@@ -11,8 +11,8 @@ const LowPrice = async() => {
 		<div className='container mx-auto mt-9'>
 			<div className='flex gap-2 items-center'>
 
-				<h1 className='text-red-500'>▲</h1>
-				<h1 className='font-bold text-2xl'>আজ দাম বেড়েছে</h1>
+				<h1 className='text-green-500'>▼</h1>
+				<h1 className='font-bold text-2xl'>আজ দাম কমেছে</h1>
 			</div>
 {
 
