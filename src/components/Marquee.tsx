@@ -1,12 +1,20 @@
 import React from 'react';
 import MarqueeText from 'react-marquee-text';
-
+interface MarqueeI{
+	nameBn:string,
+	id:string,
+	categoryIcon:string,
+	today:number,
+	unit:string,
+	change:{dir: "up" | "down";
+    pct: number;}
+}
 const Marquee = async () => {
   const res = await fetch(
     "https://api.api-store.workers.dev/api/bazardor/products"
   );
 
-  const data = await res.json();
+  const data:MarqueeI[] = await res.json();
 
   return (
     <div className="mt-4 overflow-hidden">
