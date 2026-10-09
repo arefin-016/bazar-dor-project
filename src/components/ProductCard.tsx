@@ -1,8 +1,10 @@
+import Link from "next/link";
 import React from "react";
 
 const ProductCard = ({ product }) => {
   return (
-    <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+    <Link href={`/product/${product.id}`}>
+<div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
 
       {/* Top section */}
       <div className="flex items-center gap-4">
@@ -53,6 +55,7 @@ const ProductCard = ({ product }) => {
       </div>
 
     </div>
+	</Link>
   );
 };
 
