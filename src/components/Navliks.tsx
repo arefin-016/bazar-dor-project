@@ -8,13 +8,13 @@ icon: string
 }
 const Navliks = async () => {
   const res = await fetch(
-    "https://api.api-store.workers.dev/api/bazardor/categories"
+    "https://api.abcz.workers.dev/api/bazardor/categories"
   );
 
   const data:Navlinks[] = await res.json();
 
 
-
+console.log(data,"Navlinks")
   return (
    <div className="flex flex-wrap gap-4 sm:gap-6 md:gap-8 mt-5">
   {data.map((nav) => (
