@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import React from 'react';
+import Profile from './Profile';
 
 const Navbar = () => {
 	return (
@@ -21,16 +22,10 @@ const Navbar = () => {
   </div>
 
   {/* Buttons */}
-  <div className="flex gap-2 sm:gap-3">
-    <button className="text-sm sm:text-base">
-      সাইন ইন
-    </button>
 
-    <button className="btn bg-green-400 px-2 text-sm text-white sm:px-3 sm:text-base">
-      সাইন আপ
-    </button>
+	<Profile></Profile>
   </div>
-</div>
+
 	);
 };
 

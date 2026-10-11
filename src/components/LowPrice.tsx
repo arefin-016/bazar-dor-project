@@ -2,7 +2,7 @@ import React from 'react';
 import { Tproduct } from './HighPrice';
 import ProductCard from './ProductCard';
 const LowPrice = async() => {
-	const res=await fetch("https://api.abcz.workers.dev/api/bazardor/products");
+	const res=await fetch("https://openapi.programming-hero.com/api/bazardor/products");
 	const data:Tproduct[]=await res.json();
 	const filterProduct = data.filter(
   product => product.change.dir === "down");

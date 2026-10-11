@@ -3,7 +3,7 @@ import { Tproduct } from './HighPrice';
 import ProductCard from './ProductCard';
 
 const AllProducts = async() => {
-	const res=await fetch("https://api.abcz.workers.dev/api/bazardor/products");
+	const res=await fetch("https://openapi.programming-hero.com/api/bazardor/products");
 	const data:Tproduct[]=await res.json();
 	console.log("alllproduct", data)
 	return (

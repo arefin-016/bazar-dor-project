@@ -1,6 +1,12 @@
+
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, {
+  Suspense,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
@@ -23,7 +29,45 @@ interface Product {
   };
 }
 
-const CategoryPage = () => {
+// Convert Bengali digits to English digits
+const normalizeDigits = (value: number | string): string => {
+  const banglaDigits = "০১২৩৪৫৬৭৮৯";
+
+  return String(value)
+    .replace(/[০-৯]/g, (digit) =>
+      String(banglaDigits.indexOf(digit))
+    )
+    .replace(/,/g, "");
+};
+
+// Convert price to a number
+const getNumericPrice = (price: number | string): number => {
+  const normalized = normalizeDigits(price);
+  const number = Number(normalized);
+
+  return Number.isFinite(number) ? number : 0;
+};
+
+// Convert units to Bengali
+const getUnit = (unit: string): string => {
+  if (unit === "kg") return "কেজি";
+  if (unit === "liter") return "লিটার";
+  if (unit === "piece") return "টি";
+
+  return unit;
+};
+
+// Loading component
+const LoadingSpinner = () => {
+  return (
+    <main className="flex min-h-screen items-center justify-center bg-[#F0F5F0]">
+      <span className="loading loading-infinity loading-xl text-green-700" />
+    </main>
+  );
+};
+
+// Category content
+const CategoryPageContent = () => {
   const params = useParams<{ productId: string }>();
   const productId = params.productId;
 
@@ -42,20 +86,21 @@ const CategoryPage = () => {
         setLoading(true);
         setError("");
 
-        const res = await fetch(
-          `https://api.api-store.workers.dev/api/bazardor/products?category=${encodeURIComponent(productId)}`,
-          { signal: controller.signal }
-        );
+        const res = await fetch(`https://openapi.programming-hero.com/api/bazardor/products?category=${
+            productId}`);
 
         if (!res.ok) {
           throw new Error("পণ্যের তথ্য লোড করা যায়নি।");
         }
 
         const data = await res.json();
+		console.log(data)
 
         const result: Product[] = Array.isArray(data)
           ? data
-          : data.data ?? [];
+          : Array.isArray(data.data)
+          ? data.data
+          : [];
 
         setProducts(result);
       } catch (err) {
@@ -71,38 +116,25 @@ const CategoryPage = () => {
 
     if (productId) {
       fetchProducts();
+    } else {
+      setLoading(false);
     }
 
     return () => controller.abort();
   }, [productId]);
-
-  // Convert Bengali digits to English digits
-  const normalizeDigits = (value: number | string) => {
-    const banglaDigits = "০১২৩৪৫৬৭৮৯";
-
-    return String(value)
-      .replace(/[০-৯]/g, (digit) =>
-        String(banglaDigits.indexOf(digit))
-      )
-      .replace(/,/g, "");
-  };
-
-  // Convert price to a number
-  const getNumericPrice = (price: number | string) => {
-    const normalized = normalizeDigits(price);
-    const number = Number(normalized);
-
-    return Number.isFinite(number) ? number : 0;
-  };
 
   // Search and sorting
   const filteredProducts = useMemo(() => {
     const query = search.trim().toLocaleLowerCase();
 
     const result = products.filter((product) => {
-      const name = product.nameBn.toLocaleLowerCase();
-      const category = product.categoryNameBn.toLocaleLowerCase();
-      const slug = product.slug.toLocaleLowerCase();
+      const name = (product.nameBn ?? "").toLocaleLowerCase();
+
+      const category = (
+        product.categoryNameBn ?? ""
+      ).toLocaleLowerCase();
+
+      const slug = (product.slug ?? "").toLocaleLowerCase();
 
       return (
         name.includes(query) ||
@@ -114,47 +146,44 @@ const CategoryPage = () => {
     if (sortBy === "price-low") {
       result.sort(
         (a, b) =>
-          getNumericPrice(a.today) - getNumericPrice(b.today)
+          getNumericPrice(a.today) -
+          getNumericPrice(b.today)
       );
-    }
-
-    if (sortBy === "price-high") {
+    } else if (sortBy === "price-high") {
       result.sort(
         (a, b) =>
-          getNumericPrice(b.today) - getNumericPrice(a.today)
+          getNumericPrice(b.today) -
+          getNumericPrice(a.today)
       );
     }
 
     return result;
   }, [products, search, sortBy]);
 
+  // Category information
   const categoryName = products[0]?.categoryNameBn ?? "পণ্য";
   const categoryIcon = products[0]?.categoryIcon ?? "🛒";
 
-  const getUnit = (unit: string) => {
-    if (unit === "kg") return "কেজি";
-    if (unit === "liter") return "লিটার";
-    if (unit === "piece") return "টি";
-
-    return unit;
-  };
-
   // Loading state
   if (loading) {
-    return (
-      <main className="flex min-h-screen items-center justify-center bg-[#F0F5F0]">
-        <span className="loading loading-infinity loading-xl text-green-700" />
-      </main>
-    );
+    return <LoadingSpinner />;
   }
 
   // Error state
   if (error) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-[#F0F5F0] p-4">
-        <p className="rounded-xl bg-white p-6 text-center text-red-600">
-          {error}
-        </p>
+        <div className="rounded-2xl bg-white p-6 text-center shadow-sm">
+          <p className="mb-4 text-red-600">{error}</p>
+
+          <button
+            type="button"
+            onClick={() => window.location.reload()}
+            className="btn rounded-xl bg-green-700 text-white hover:bg-green-800"
+          >
+            আবার চেষ্টা করুন
+          </button>
+        </div>
       </main>
     );
   }
@@ -239,15 +268,16 @@ const CategoryPage = () => {
                 className="h-10 min-w-48 appearance-none rounded-xl border border-gray-200 bg-white py-2 pl-3 pr-10 text-sm text-gray-700 outline-none focus:border-green-600"
               >
                 <option value="default">ডিফল্ট</option>
+
                 <option value="price-low">
                   দাম: কম থেকে বেশি
                 </option>
+
                 <option value="price-high">
                   দাম: বেশি থেকে কম
                 </option>
               </select>
 
-              {/* Chevron */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -280,12 +310,12 @@ const CategoryPage = () => {
               <Link
                 href={`/product/${product.id}`}
                 key={product.id}
-                className="group rounded-2xl border border-gray-200 bg-white p-4 transition hover:-translate-y-1 hover:shadow-md"
+                className="group rounded-2xl border border-gray-200 bg-white p-4 transition duration-200 hover:-translate-y-1 hover:shadow-md"
               >
                 {/* Product Name */}
                 <div className="mb-4 flex items-center gap-3">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#F0F5F0] text-xl">
-                    {product.image || product.categoryIcon}
+                    {product.image || product.categoryIcon || "🛒"}
                   </div>
 
                   <div>
@@ -307,7 +337,10 @@ const CategoryPage = () => {
                     </p>
 
                     <p className="text-lg font-bold text-gray-900">
-                      {product.today} টাকা
+                      {getNumericPrice(product.today).toLocaleString(
+                        "bn-BD"
+                      )}{" "}
+                      টাকা
                     </p>
 
                     <p className="text-xs text-gray-500">
@@ -318,22 +351,25 @@ const CategoryPage = () => {
                   {/* Price Change */}
                   <span
                     className={`badge border-0 px-2 py-3 text-xs font-semibold ${
-                      product.change.dir === "up"
+                      product.change?.dir === "up"
                         ? "bg-red-50 text-red-600"
-                        : product.change.dir === "down"
+                        : product.change?.dir === "down"
                         ? "bg-green-50 text-green-700"
                         : "bg-gray-100 text-gray-600"
                     }`}
                   >
-                    {product.change.dir === "up"
+                    {product.change?.dir === "up"
                       ? "▲"
-                      : product.change.dir === "down"
+                      : product.change?.dir === "down"
                       ? "▼"
                       : "—"}{" "}
-                    {product.change.pct.toLocaleString("bn-BD", {
-                      minimumFractionDigits: 1,
-                      maximumFractionDigits: 1,
-                    })}
+                    {(product.change?.pct ?? 0).toLocaleString(
+                      "bn-BD",
+                      {
+                        minimumFractionDigits: 1,
+                        maximumFractionDigits: 1,
+                      }
+                    )}
                     %
                   </span>
                 </div>
@@ -341,6 +377,7 @@ const CategoryPage = () => {
             ))}
           </div>
         ) : (
+          /* Empty State */
           <div className="rounded-2xl border border-gray-200 bg-white px-4 py-12 text-center">
             <p className="mb-2 text-3xl">🔎</p>
 
@@ -366,6 +403,15 @@ const CategoryPage = () => {
         )}
       </div>
     </main>
+  );
+};
+
+// Suspense wrapper
+const CategoryPage = () => {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <CategoryPageContent />
+    </Suspense>
   );
 };
 
