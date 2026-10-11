@@ -1,16 +1,24 @@
 "use client";
 
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Profile from "./Profile";
 
 const Navbar = () => {
-  const today = new Date().toLocaleDateString("bn-BD", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+  const [today, setToday] = useState("");
+
+  useEffect(() => {
+    const date = new Date();
+
+    setToday(
+      date.toLocaleDateString("bn-BD", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })
+    );
+  }, []);
 
   return (
     <div className="container mx-auto flex items-center justify-between px-4 py-3">

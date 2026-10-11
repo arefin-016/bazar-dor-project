@@ -1,15 +1,23 @@
-
+'use client'
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const Banner = () => {
-	const today = new Date().toLocaleDateString("bn-BD", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+	const [today, setToday] = useState("");
+
+  useEffect(() => {
+    const date = new Date();
+
+    setToday(
+      date.toLocaleDateString("bn-BD", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })
+    );
+  }, []);
   return (
     <div className="container mx-auto my-5 px-4">
       <div className="bg-base-100 shadow-sm p-5 sm:p-8 md:p-10 rounded-2xl">

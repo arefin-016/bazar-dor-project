@@ -2,7 +2,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -19,6 +19,7 @@ import {
 } from "@heroui/react";
 
 import { toast } from "react-toastify";
+import SignInNotice from "@/components/SignInNotice";
 
 export default function Basic() {
   const router = useRouter();
@@ -106,6 +107,11 @@ export default function Basic() {
   };
 
   return (
+	<>
+	 <Suspense fallback={null}>
+        <SignInNotice />
+      </Suspense>
+
     <div className="flex min-h-screen flex-col items-center justify-center bg-[#f4f5f6] p-4 font-sans">
       {/* Page Heading */}
 
@@ -314,5 +320,6 @@ export default function Basic() {
         </Link>
       </div>
     </div>
+	</>
   );
 }

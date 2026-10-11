@@ -4,18 +4,20 @@ import { auth } from "@/lib/auth";
 
 export async function proxy(request: NextRequest) {
   const session = await auth.api.getSession({
-	headers: request.headers,
+    headers: request.headers,
   });
 
   if (!session) {
-	const signInUrl = new URL("/SignIn", request.url);
+    const signInUrl = new URL("/SignIn", request.url);
 
-	signInUrl.searchParams.set(
-	  "callbackURL",
-	  request.nextUrl.pathname + request.nextUrl.search
-	);
+    signInUrl.searchParams.set(
+      "callbackURL",
+      request.nextUrl.pathname + request.nextUrl.search
+    );
 
-	return NextResponse.redirect(signInUrl);
+    signInUrl.searchParams.set("redirected", "true");
+
+    return NextResponse.redirect(signInUrl);
   }
 
   return NextResponse.next();
