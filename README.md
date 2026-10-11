@@ -1,36 +1,22 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🛒 বাজার দর | BazarDor
+দৈনন্দিন পণ্যের দাম জানুন এক নজরে!
 
-## Getting Started
+## বাজার দর (BazarDor) একটি সহজ ও ব্যবহারবান্ধব ওয়েব অ্যাপ্লিকেশন, যেখানে ব্যবহারকারীরা নিত্যপ্রয়োজনীয় পণ্যের বর্তমান দাম এবং দামের পরিবর্তন সম্পর্কে জানতে পারবেন। এর লক্ষ্য হলো বাজারদর সম্পর্কে তথ্য সহজলভ্য করা, যাতে মানুষ কেনাকাটার আগে পণ্যের দাম সম্পর্কে ধারণা পেতে পারেন।
 
-First, run the development server:
+# ✨ Key Features
+📊 Live Price Information — API থেকে পণ্যের দাম ও সর্বশেষ উপলব্ধ তথ্য দেখুন।
+📈 Price Comparison — আজকের দামের সঙ্গে গতকাল, গত সপ্তাহ ও গত মাসের দাম তুলনা করুন।
+🛍️ Product Categories — বিভিন্ন ক্যাটাগরি অনুযায়ী প্রয়োজনীয় পণ্য খুঁজে নিন।
+🔍 Product Details — পণ্যের বিস্তারিত তথ্য, দাম এবং দামের পরিবর্তন দেখুন।
+🔐 User Authentication — Better Auth ব্যবহার করে সাইন আপ, সাইন ইন এবং ব্যবহারকারীর সেশন পরিচালনা করুন।
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🛠️ Technologies Used
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
+- daisyUI
+- Better Auth
+- MongoDB
+- React Toastify
