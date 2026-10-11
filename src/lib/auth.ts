@@ -1,11 +1,26 @@
 import { betterAuth } from "better-auth";
+import { betterAuth } from "better-auth";
 import { MongoClient } from "mongodb";
 import { mongodbAdapter } from "@better-auth/mongo-adapter";
 
 const client = new MongoClient(process.env.MONGO_URI as string);
 const db = client.db("bazar-dor-projet");
 
-const productionUrl = process.env.BETTER_AUTH_URL as string;
+
+const productionUrl =
+  process.env.BETTER_AUTH_URL ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : "");
+
+
+const vercelUrls = [
+  process.env.VERCEL_URL,
+  process.env.VERCEL_BRANCH_URL,
+  process.env.VERCEL_PROJECT_PRODUCTION_URL,
+]
+  .filter(Boolean)
+  .map((url) => `https://${url}`);
 
 export const auth = betterAuth({
   baseURL: productionUrl || "http://localhost:3000",
@@ -14,6 +29,7 @@ export const auth = betterAuth({
   trustedOrigins: [
     "http://localhost:3000",
     ...(productionUrl ? [productionUrl] : []),
+    ...vercelUrls,
   ],
 
   emailAndPassword: {
