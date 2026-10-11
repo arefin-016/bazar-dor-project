@@ -1,34 +1,91 @@
 
-import Link from 'next/link';
-import React from 'react';
-interface Navlinks{
-	id: string,
-slug: string,
-nameBn: string,
-icon: string,
+"use client";
 
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import React, { useEffect, useState } from "react";
+
+interface Navlinks {
+  id: string;
+  slug: string;
+  nameBn: string;
+  icon: string;
 }
-const Navliks = async () => {
-  const res = await fetch(
-    "https://openapi.programming-hero.com/api/bazardor/categories"
-  );
 
-  const data:Navlinks[] = await res.json();
+const Navliks = () => {
+  const pathname = usePathname();
 
+  const [data, setData] = useState<Navlinks[]>([]);
+  const [loading, setLoading] = useState(true);
 
-console.log(data,"Navlinks")
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch(
+          "https://openapi.programming-hero.com/api/bazardor/categories"
+        );
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch categories");
+        }
+
+        const result = await res.json();
+
+        const categories: Navlinks[] = Array.isArray(result)
+          ? result
+          : result.data;
+
+        setData(Array.isArray(categories) ? categories : []);
+      } catch (error) {
+        console.error("Navlinks API error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="mt-5 flex gap-3">
+        <span className="loading loading-spinner loading-sm text-green-600" />
+        <span className="text-sm text-gray-500">
+          ক্যাটাগরি লোড হচ্ছে...
+        </span>
+      </div>
+    );
+  }
+
   return (
-   <div className="flex flex-wrap gap-4 sm:gap-6 md:gap-8 mt-5">
-  {data.map((nav) => (
-    <Link href={`/Category/${nav.slug}`}
-      className="flex items-center gap-1"
-      key={nav.id}
-    >
-      <span>{nav.icon}</span>
-      {nav.nameBn}
-    </Link>
-  ))}
-</div>
+    <nav className="mt-5 w-full">
+      <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+        {data.map((nav) => {
+          const href = `/Category/${nav.slug}`;
+
+          const isActive = pathname === href;
+
+          return (
+            <Link
+              href={href}
+              key={nav.id}
+              aria-current={isActive ? "page" : undefined}
+              className={`inline-flex items-center justify-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-all duration-200 sm:px-5 sm:py-2.5 sm:text-base ${
+                isActive
+                  ? "border-green-600 bg-green-600 text-white shadow-md"
+                  : "border-gray-200 bg-white text-gray-700 hover:border-green-500 hover:bg-green-50 hover:text-green-700"
+              }`}
+            >
+              <span className="text-base sm:text-lg">
+                {nav.icon}
+              </span>
+
+              <span>{nav.nameBn}</span>
+            </Link>
+          );
+        })}
+      </div>
+    </nav>
   );
 };
 

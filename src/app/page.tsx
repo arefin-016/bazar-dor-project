@@ -22,8 +22,7 @@ export default function Home() {
 </div>}
     >
 
-<Navliks />
-<Marquee></Marquee>
+
  <Banner></Banner>
  <HighPrice></HighPrice>
 	<LowPrice></LowPrice>

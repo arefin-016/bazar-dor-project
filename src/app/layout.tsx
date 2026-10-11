@@ -4,6 +4,9 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { ToastContainer } from "react-toastify";
 import Footer from "@/components/Footer";
+import Navliks from "@/components/Navliks";
+import Marquee from "@/components/Marquee";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,6 +32,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col">
 		<Navbar></Navbar>
+		<Suspense
+  fallback={
+    <div className="flex min-h-40 items-center justify-center gap-4">
+      <div className="skeleton h-10 w-24 rounded-full" />
+      <div className="skeleton h-10 w-24 rounded-full" />
+      <div className="skeleton h-10 w-24 rounded-full" />
+    </div>
+  }
+>
+  <Navliks />
+  <Marquee />
+</Suspense>
 		<ToastContainer position="top-right" autoClose={3000} theme="light" newestOnTo />
 		{children}
 		<Footer></Footer>
