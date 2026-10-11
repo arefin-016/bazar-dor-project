@@ -1,42 +1,60 @@
-import React from 'react';
-import ProductCard from './ProductCard';
-export interface Tproduct{
+import React from "react";
+import ProductCard from "./ProductCard";
 
-unit:string,
-nameBn:string,
-categoryIcon:string,
-change:{
-	dir:string,
-	pct:number
-
-},
-id:number
-
+export interface Tproduct {
+  id: number;
+  slug: string;
+  nameBn: string;
+  category: string;
+  categoryNameBn: string;
+  categoryIcon: string;
+  unit: string;
+  image: string;
+  today: number;
+  yesterday: number;
+  lastWeek: number;
+  lastMonth: number;
+  change: {
+    dir: "up" | "down";
+    pct: number;
+  };
 }
 
-const HighPrice =async () => {
-	const res=await fetch("https://openapi.programming-hero.com/api/bazardor/products");
-	const data:Tproduct[]=await res.json();
-	const filterProduct = data.filter(
-  product => product.change.dir === "up");
-	const top6Products = filterProduct.sort((a, b) =>b.change.pct - a.change.pct).slice(0,6);
-	console.log(top6Products)
+const HighPrice = async () => {
+  const res = await fetch(
+    "https://openapi.programming-hero.com/api/bazardor/products"
+  );
 
+  if (!res.ok) {
+    throw new Error("Failed to fetch products");
+  }
 
-	return (
-		<div className='container mx-auto mt-9'>
-			<div className='flex gap-2 items-center'>
+  const result = await res.json();
 
-				<h1 className='text-red-500'>▲</h1>
-				<h1 className='font-bold text-2xl'>আজ দাম বেড়েছে</h1>
-			</div>
-			<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 mt-3'>
-{
+  // API direct array অথবা { data: [...] } দিতে পারে
+  const products: Tproduct[] = Array.isArray(result)
+    ? result
+    : result.data;
 
-	top6Products.map(tProduct=><ProductCard key={tProduct.id} product={tProduct}></ProductCard>)
-}</div>
-		</div>
-	);
+  const top6Products = products
+    .filter((product) => product.change.dir === "up")
+    .sort((a, b) => b.change.pct - a.change.pct)
+    .slice(0, 6);
+
+  return (
+    <div className="container mx-auto mt-9 px-4">
+      <div className="flex items-center gap-2">
+        <h1 className="text-red-500">▲</h1>
+        <h1 className="text-2xl font-bold">আজ দাম বেড়েছে</h1>
+      </div>
+
+      <div className="mt-3 grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
+        {top6Products.map((tProduct) => (
+          <ProductCard key={tProduct.id} product={tProduct} />
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default HighPrice;
