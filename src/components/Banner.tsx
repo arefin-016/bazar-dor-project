@@ -1,8 +1,15 @@
 
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 
 const Banner = () => {
+	const today = new Date().toLocaleDateString("bn-BD", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
   return (
     <div className="container mx-auto my-5 px-4">
       <div className="bg-base-100 shadow-sm p-5 sm:p-8 md:p-10 rounded-2xl">
@@ -11,6 +18,9 @@ const Banner = () => {
 
           {/* Left Section */}
           <div className="w-full md:w-3/5 text-center md:text-left">
+		  <p className="inline-block bg-[#E6F4EA] text-[#0D652D] text-xs font-medium px-3 py-1 rounded-full mb-3">
+  {today}
+</p>
 
             <p className="text-sm sm:text-base text-gray-500 mb-3">
               আজকের বাজারদর
@@ -26,9 +36,9 @@ const Banner = () => {
               দামের পরিবর্তন এক জায়গায়।
             </p>
 
-            <button className="btn btn-primary mt-5 px-6">
-              বিস্তারিত দেখুন
-            </button>
+            <Link href ={'#সব-পণ্য'} className="btn bg-green-600 text-white rounded-xl mt-5 px-6">
+             সব পণ্য দেখুন
+            </Link>
 
           </div>
 
