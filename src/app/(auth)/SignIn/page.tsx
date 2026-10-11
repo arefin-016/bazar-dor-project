@@ -300,7 +300,7 @@ export default function Basic() {
             অ্যাকাউন্ট নেই?{" "}
 
             <Link
-              href="/SignUp"
+              href="/SIgnUp"
               className="font-medium text-[#05893e] hover:underline"
             >
               সাইন আপ করুন

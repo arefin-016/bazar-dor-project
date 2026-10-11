@@ -354,7 +354,7 @@ export default function Basic() {
           <p className="mt-4 w-full text-center text-xs text-gray-600">
             অ্যাকাউন্ট আছে?{" "}
             <Link
-              href="/authentication/sign-in"
+              href="/SignIn"
               className="font-medium text-[#05893e] hover:underline"
             >
               সাইন ইন করুন
