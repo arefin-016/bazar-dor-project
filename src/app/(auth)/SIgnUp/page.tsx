@@ -67,7 +67,7 @@ export default function Basic() {
       if (signupData) {
         setSuccessMessage("আপনার অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে!");
 
-        router.push("/authentication/sign-in");
+        router.push("/SignUp");
       }
     } catch (error) {
       console.error("Signup error:", error);
